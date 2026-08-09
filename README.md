@@ -21,17 +21,17 @@ npm install luau-lsp
 If installed globally, you can use Luau LSP commands directly:
 
 ```bash
-luau-lsp init
-luau-lsp serve
-luau-lsp build
+luau-lsp analyze
+luau-lsp lsp
+luau-lsp require-graph
 ```
 
 If installed locally, you can use it through npx:
 
 ```bash
-npx luau-lsp init
-npx luau-lsp serve
-npx luau-lsp build
+npx luau-lsp analyze
+npx luau-lsp lsp
+npx luau-lsp require-graph
 ```
 
 If you have a [rokit.toml](https://github.com/rojo-rbx/rokit) file, `npx luau-lsp` will automatically use it.
