@@ -1,11 +1,11 @@
 {
-    "name": "rojo",
-    "version": "2.0.0",
-    "description": "`npx rojo` Rojo enables Roblox developers to use professional-grade software engineering tools.",
+    "name": "luau-lsp",
+    "version": "1.0.0",
+    "description": "`npx luau-lsp` Language Server Implementation for Luau",
     "type": "module",
     "main": "src/index.js",
     "bin": {
-        "rojo": "src/index.js"
+        "luau-lsp": "src/index.js"
     },
     "files": [
         "src/index.js"
@@ -14,15 +14,16 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Unreal-Works/rojo-npm.git"
+        "url": "git+https://github.com/Unreal-Works/luau-lsp-npm.git"
     },
-    "homepage": "https://github.com/Unreal-Works/rojo-npm/README.md",
+    "homepage": "https://github.com/Unreal-Works/luau-lsp-npm/README.md",
     "bugs": {
-        "url": "https://github.com/Unreal-Works/rojo-npm/issues"
+        "url": "https://github.com/Unreal-Works/luau-lsp-npm/issues"
     },
     "keywords": [
-        "rojo",
-        "roblox",
+        "luau",
+        "lsp",
+        "language-server",
         "cli"
     ],
     "scripts": {

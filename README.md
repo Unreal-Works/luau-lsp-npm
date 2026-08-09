@@ -1,37 +1,37 @@
-# rojo-npm
+# luau-lsp-npm
 
-Rojo enables Roblox developers to use professional-grade software engineering tools.
+Language Server Implementation for Luau.
 
 You should prefer [rkkit](https://github.com/evilbocchi/rkkit) if you would rather use Rokit in NPM.
 
 ## Installation
 
 ```bash
-npm install -g rojo
+npm install -g luau-lsp
 ```
 
 Or install locally in your project:
 
 ```bash
-npm install rojo
+npm install luau-lsp
 ```
 
 ## Usage
 
-If installed globally, you can use Rojo commands directly:
+If installed globally, you can use Luau LSP commands directly:
 
 ```bash
-rojo init
-rojo serve
-rojo build
+luau-lsp init
+luau-lsp serve
+luau-lsp build
 ```
 
 If installed locally, you can use it through npx:
 
 ```bash
-npx rojo init
-npx rojo serve
-npx rojo build
+npx luau-lsp init
+npx luau-lsp serve
+npx luau-lsp build
 ```
 
 If you have a [rokit.toml](https://github.com/rojo-rbx/rokit) file, `npx rojo` will automatically use it.

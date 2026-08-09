@@ -9,7 +9,7 @@ if (esMain(import.meta)) {
     logger.setLogLevel("error");
 
     const result = await rkCommandHandlerSync({
-        tool: "rojo",
+        tool: "luau-lsp",
         args: process.argv.slice(2),
     });
 
