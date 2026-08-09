@@ -9,7 +9,7 @@ import test from "node:test";
 const cliPath = fileURLToPath(new URL("./index.js", import.meta.url));
 const projectRoot = path.dirname(cliPath);
 
-const skip = process.env.ROJO_NPM_SKIP_CLI_TESTS === "1";
+const skip = process.env.LUAU_LSP_NPM_SKIP_CLI_TESTS === "1";
 
 function runCli(args = [], options = {}) {
     return spawnSync(process.execPath, [cliPath, ...args], {
@@ -23,83 +23,69 @@ function output(result) {
     return `${result.stdout ?? ""}${result.stderr ?? ""}`;
 }
 
-test("--version prints the installed Rojo version", { skip }, () => {
+test("--version prints the installed luau-lsp version", { skip }, () => {
     const result = runCli(["--version"]);
 
     assert.equal(result.status, 0, output(result));
-    assert.match(result.stdout, /Rojo \d+\.\d+\.\d+/);
+    assert.match(result.stdout, /^\d+\.\d+\.\d+\r?\n?$/);
 });
 
-test(
-    "rokit.toml Rojo version takes precedence over the global version",
-    { skip },
-    () => {
-        const dir = mkdtempSync(path.join(tmpdir(), "rojo-npm-"));
-        const configuredVersion = "7.6.1";
-        try {
-            const fallbackResult = runCli(["--version"], { cwd: dir });
-            assert.equal(fallbackResult.status, 0, output(fallbackResult));
-            assert.match(fallbackResult.stdout, /Rojo \d+\.\d+\.\d+/);
-
-            writeFileSync(
-                path.join(dir, "rokit.toml"),
-                `[tools]\nrojo = "rojo-rbx/rojo@${configuredVersion}"\n`,
-            );
-
-            const configuredResult = runCli(["--version"], { cwd: dir });
-
-            assert.equal(configuredResult.status, 0, output(configuredResult));
-            assert.match(
-                configuredResult.stdout,
-                new RegExp(`Rojo ${configuredVersion.replaceAll(".", "\\.")}`),
-            );
-            assert.notEqual(configuredResult.stdout, fallbackResult.stdout);
-        } finally {
-            rmSync(dir, { recursive: true, force: true });
-        }
-    },
-);
-
-test("--help prints the subcommand list", { skip }, () => {
-    const result = runCli(["--help"]);
-
-    assert.equal(result.status, 0, output(result));
-    for (const subcommand of [
-        "build",
-        "doc",
-        "init",
-        "plugin",
-        "serve",
-        "sourcemap",
-        "syncback",
-        "upload",
-    ]) {
-        assert.match(output(result), new RegExp(`\\b${subcommand}\\b`));
-    }
-});
-
-test("running with no arguments prints usage and exits 2", { skip }, () => {
-    const result = runCli([]);
-
-    assert.equal(result.status, 2, output(result));
-    assert.match(output(result), /SUBCOMMANDS:/);
-});
-
-test("an unknown subcommand exits with a non-zero code", { skip }, () => {
-    const result = runCli(["definitely-not-a-command"]);
-
-    assert.notEqual(result.status, 0, output(result));
-    assert.match(output(result), /error:/);
-});
-
-test("rojo build without a project reports an error", { skip }, () => {
-    const dir = mkdtempSync(path.join(tmpdir(), "rojo-npm-"));
+test("rokit.toml configures the luau-lsp version", { skip }, () => {
+    const dir = mkdtempSync(path.join(tmpdir(), "luau-lsp-npm-"));
+    const configuredVersion = "1.69.0";
     try {
-        const result = runCli(["build"], { cwd: dir });
+        writeFileSync(
+            path.join(dir, "rokit.toml"),
+            `[tools]\nluau-lsp = "JohnnyMorganz/luau-lsp@${configuredVersion}"\n`,
+        );
 
-        assert.notEqual(result.status, 0, output(result));
-        assert.match(output(result), /error/i);
+        const result = runCli(["--version"], { cwd: dir });
+
+        assert.equal(result.status, 0, output(result));
+        assert.match(
+            result.stdout,
+            new RegExp(`^${configuredVersion.replaceAll(".", "\\.")}\\r?\\n?$`),
+        );
     } finally {
         rmSync(dir, { recursive: true, force: true });
     }
+});
+
+test("--help prints the luau-lsp modes and options", { skip }, () => {
+    const result = runCli(["--help"]);
+
+    assert.equal(result.status, 0, output(result));
+    for (const mode of ["analyze", "lsp", "require-graph"]) {
+        assert.match(output(result), new RegExp(`\\b${mode}\\b`));
+    }
+    assert.match(output(result), /--show-flags/);
+});
+
+test("--show-flags displays available Luau flags", { skip }, () => {
+    const result = runCli(["--show-flags"]);
+
+    assert.equal(result.status, 0, output(result));
+    assert.notEqual(result.stdout.trim(), "");
+});
+
+test("running with no mode reports the available modes", { skip }, () => {
+    const result = runCli([]);
+
+    assert.equal(result.status, 1, output(result));
+    assert.match(output(result), /Specify a particular mode/);
+    assert.match(output(result), /Usage: luau-lsp/);
+});
+
+test("an unknown mode exits with a non-zero code", { skip }, () => {
+    const result = runCli(["definitely-not-a-command"]);
+
+    assert.equal(result.status, 1, output(result));
+    assert.match(output(result), /Failed to parse/);
+});
+
+test("analyze without input reports a Luau error", { skip }, () => {
+    const result = runCli(["analyze"]);
+
+    assert.notEqual(result.status, 0, output(result));
+    assert.match(output(result), /error/i);
 });

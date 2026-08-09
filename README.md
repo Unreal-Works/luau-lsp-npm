@@ -34,9 +34,9 @@ npx luau-lsp serve
 npx luau-lsp build
 ```
 
-If you have a [rokit.toml](https://github.com/rojo-rbx/rokit) file, `npx rojo` will automatically use it.
+If you have a [rokit.toml](https://github.com/rojo-rbx/rokit) file, `npx luau-lsp` will automatically use it.
 
 ## License
 
-MIT. Note that I do not have any affiliation with the original Rojo project or its maintainers, and you
-may want to check the original [Rojo license](http://github.com/rojo-rbx/rojo/).
+MIT. Note that I do not have any affiliation with the original Luau LSP project or its maintainers, and you
+may want to check the original [luau-lsp license](https://github.com/JohnnyMorganz/luau-lsp).
