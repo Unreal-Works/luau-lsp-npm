@@ -1,0 +1,41 @@
+{
+    "name": "rojo",
+    "version": "2.0.0",
+    "description": "`npx rojo` Rojo enables Roblox developers to use professional-grade software engineering tools.",
+    "type": "module",
+    "main": "src/index.js",
+    "bin": {
+        "rojo": "src/index.js"
+    },
+    "files": [
+        "src/index.js"
+    ],
+    "author": "evilbocchi",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Unreal-Works/rojo-npm.git"
+    },
+    "homepage": "https://github.com/Unreal-Works/rojo-npm/README.md",
+    "bugs": {
+        "url": "https://github.com/Unreal-Works/rojo-npm/issues"
+    },
+    "keywords": [
+        "rojo",
+        "roblox",
+        "cli"
+    ],
+    "scripts": {
+        "format": "prettier --write .",
+        "test": "node --test",
+        "prepare": "lefthook install"
+    },
+    "devDependencies": {
+        "lefthook": "^2.1.10",
+        "prettier": "^3.9.6"
+    },
+    "dependencies": {
+        "@unrealworks/rkkit-core": "^0.3.0",
+        "es-main": "^1.4.0"
+    }
+}
